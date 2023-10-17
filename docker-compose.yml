@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+
+  db1:
+    image: postgres:13
+    container_name: postgres_db1
+    environment:
+      POSTGRES_DB: mydb1
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    networks:
+      - main-network
+
+  db2:
+    image: postgres:13
+    container_name: postgres_db2
+    environment:
+      POSTGRES_DB: mydb2
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    networks:
+      - main-network
+
+  ms-auth:
+    build:
+      context: .
+      dockerfile: Dockerfile # Asegúrate de tener un Dockerfile para tu aplicación Spring Boot en el mismo directorio
+    image: ms-auth:latest
+    container_name: ms-auth
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db1:5432/mydb1
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+    depends_on:
+      - db1
+      - db2
+    ports:
+      - "8080:8080"
+    networks:
+      - main-network
+
+networks:
+  main-network:
+    driver: bridge
