@@ -81,7 +81,7 @@ public class AppConfig {
                 )
                 .info(
                 new Info()
-                        .title("prograCOL - Dog Identity API - "+environment)
+                        .title(environment)
                         .version("0.1")
                         .description("Api spring boot 3 con swagger")
         );
