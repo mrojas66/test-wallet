@@ -15,3 +15,23 @@ To get the microservice up and running locally, follow these steps:
    ```bash
    git clone https://github.com/your-repository-link/ms-auth.git
    cd ms-auth
+
+
+```mermaid
+graph TD
+
+  Konga -->|Admin Connection| Kong
+  MSAuth -->|API Request| Kong
+  Kong -->|Logs| Sentry
+  MSAuth -->|Logs| Sentry
+
+  subgraph "Microservices Infrastructure"
+    Kong
+    MSAuth[MS Auth]
+  end
+
+  subgraph "Monitoring & Admin"
+    Konga
+    Sentry
+  end
+

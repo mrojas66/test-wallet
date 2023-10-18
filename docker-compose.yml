@@ -1,49 +1,107 @@
 version: '3.7'
 
 services:
-
-  db1:
-    image: postgres:13
-    container_name: postgres_db1
-    environment:
-      POSTGRES_DB: mydb1
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5434:5432"
-    networks:
-      - main-network
-
-  db2:
+  db-ms-auth:
     image: postgres:13
     container_name: postgres_db2
     environment:
-      POSTGRES_DB: mydb2
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5433:5432"
     networks:
       - main-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
-  ms-auth:
-    build:
-      context: .
-      dockerfile: Dockerfile # Asegúrate de tener un Dockerfile para tu aplicación Spring Boot en el mismo directorio
-    image: ms-auth:latest
-    container_name: ms-auth
+  #ms-auth:
+  #  build:
+  #    context: ./ms-auth
+  #    dockerfile: Dockerfile
+  #  image: ms-auth:latest
+  #  container_name: ms-auth
+  #  environment:
+  #    SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+  #    SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+  #    SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+  #  depends_on:
+  #    - db-ms-auth
+  #  ports:
+  #    - "8081:8080"
+  #  networks:
+  #    - main-network
+
+  postgres-sentry:
+    image: postgres:13
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db1:5432/mydb1
-      - SPRING_DATASOURCE_USERNAME=user
-      - SPRING_DATASOURCE_PASSWORD=password
-    depends_on:
-      - db1
-      - db2
+      POSTGRES_USER: sentry
+      POSTGRES_PASSWORD: sentry
+      POSTGRES_DB: sentry
+    volumes:
+      - sentry-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
     ports:
-      - "8080:8080"
+      - "6379:6379"
+
+  sentry:
+    image: sentry:latest
+    platform: linux/x86_64
+    depends_on:
+      - postgres-sentry
+    environment:
+      SENTRY_SECRET_KEY: "sentrysecret"
+      SENTRY_POSTGRES_HOST: postgres-sentry
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_DB_NAME: sentry
+      SENTRY_REDIS_HOST: redis
+    ports:
+      - "9000:9000" # Exponer la interfaz web de Sentry al host
+
+  kong-database:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_PASSWORD: kong
+      POSTGRES_DB: kong
+    volumes:
+      - kong-data:/var/lib/postgresql/data
+
+  kong:
+    image: kong:latest
+    depends_on:
+      - kong-database
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: kong
+    ports:
+      - "8000:8000" # Proxy port
+      - "8001:8001" # Admin API
+      - "8443:8443" # Proxy HTTPS port
+      - "8444:8444" # Admin API HTTPS
+
+  konga:
+    image: pantsel/konga:latest
+    platform: linux/x86_64
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "1337:1337"
+    depends_on:
+      - kong
     networks:
       - main-network
 
 networks:
   main-network:
     driver: bridge
+
+volumes:
+  db-data:
+  sentry-data:
+  kong-data:
