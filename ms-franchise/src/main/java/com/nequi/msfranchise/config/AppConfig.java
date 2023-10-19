@@ -45,7 +45,7 @@ public class AppConfig {
                 )
                 .info(
                 new Info()
-                        .title("Nequi - Franchise - "+environment)
+                        .title("Franchise - "+environment)
                         .version("0.1")
                         .description("Api spring boot 3 con swagger")
         );
