@@ -1,4 +1,4 @@
-package com.nequi.msauth.exception;
+package com.nequi.msfranchise.exception;
 
 /**
  * Clase excepción personalizada ModelNotFound

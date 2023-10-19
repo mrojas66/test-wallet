@@ -1,4 +1,4 @@
-package com.nequi.msauth.exception;
+package com.nequi.msfranchise.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

@@ -3,17 +3,31 @@ version: '3.7'
 services:
   db-ms-auth:
     image: postgres:13
-    container_name: postgres_db2
+    container_name: postgres_db_auth
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_AUTH}
+      POSTGRES_USER: ${POSTGRES_USER_AUTH}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_AUTH}
     ports:
       - "5433:5432"
     networks:
       - main-network
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-auth:/var/lib/postgresql/data
+
+  db-ms-francinse:
+    image: postgres:13
+    container_name: postgres_db_franchise
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_FRAN}
+      POSTGRES_USER: ${POSTGRES_USER_FRAN}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_FRAN}
+    ports:
+      - "5434:5432"
+    networks:
+      - main-network
+    volumes:
+      - db-fran:/var/lib/postgresql/data
 
   #ms-auth:
   #  build:
@@ -32,76 +46,47 @@ services:
   #  networks:
   #    - main-network
 
-  postgres-sentry:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: sentry
-      POSTGRES_PASSWORD: sentry
-      POSTGRES_DB: sentry
-    volumes:
-      - sentry-data:/var/lib/postgresql/data
+  #kong-database:
+  #  image: postgres:13
+  #  environment:
+  #    POSTGRES_USER: kong
+  #    POSTGRES_PASSWORD: kong
+  #    POSTGRES_DB: kong
+  #  volumes:
+  #    - kong-data:/var/lib/postgresql/data
 
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
+  #kong:
+  #  image: kong:latest
+  #  depends_on:
+  #    - kong-database
+  #  environment:
+  #    KONG_DATABASE: postgres
+  #    KONG_PG_HOST: kong-database
+  #    KONG_PG_USER: kong
+  #    KONG_PG_PASSWORD: kong
+  #  ports:
+  #    - "8000:8000" # Proxy port
+  #    - "8001:8001" # Admin API
+  #    - "8443:8443" # Proxy HTTPS port
+  #    - "8444:8444" # Admin API HTTPS
 
-  sentry:
-    image: sentry:latest
-    platform: linux/x86_64
-    depends_on:
-      - postgres-sentry
-    environment:
-      SENTRY_SECRET_KEY: "sentrysecret"
-      SENTRY_POSTGRES_HOST: postgres-sentry
-      SENTRY_DB_USER: sentry
-      SENTRY_DB_PASSWORD: sentry
-      SENTRY_DB_NAME: sentry
-      SENTRY_REDIS_HOST: redis
-    ports:
-      - "9000:9000" # Exponer la interfaz web de Sentry al host
-
-  kong-database:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: kong
-      POSTGRES_PASSWORD: kong
-      POSTGRES_DB: kong
-    volumes:
-      - kong-data:/var/lib/postgresql/data
-
-  kong:
-    image: kong:latest
-    depends_on:
-      - kong-database
-    environment:
-      KONG_DATABASE: postgres
-      KONG_PG_HOST: kong-database
-      KONG_PG_USER: kong
-      KONG_PG_PASSWORD: kong
-    ports:
-      - "8000:8000" # Proxy port
-      - "8001:8001" # Admin API
-      - "8443:8443" # Proxy HTTPS port
-      - "8444:8444" # Admin API HTTPS
-
-  konga:
-    image: pantsel/konga:latest
-    platform: linux/x86_64
-    environment:
-      - NODE_ENV=production
-    ports:
-      - "1337:1337"
-    depends_on:
-      - kong
-    networks:
-      - main-network
+  #konga:
+  #  image: pantsel/konga:latest
+  #  platform: linux/x86_64
+  #  environment:
+  #    - NODE_ENV=production
+  #  ports:
+  #    - "1337:1337"
+  #  depends_on:
+  #    - kong
+  #  networks:
+  #    - main-network
 
 networks:
   main-network:
     driver: bridge
 
 volumes:
-  db-data:
-  sentry-data:
-  kong-data:
+  db-auth:
+  db-fran:
+  #kong-data:

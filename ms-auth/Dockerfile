@@ -7,6 +7,7 @@ WORKDIR /workspace/app
 # Copiar el pom.xml y descargar las dependencias para aprovechar el caching de Docker
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
+RUN echo "SPRING_DATASOURCE_URL: $SPRING_DATASOURCE_URL"
 
 # Ahora, copiamos el código fuente y construimos la aplicación
 COPY src src
