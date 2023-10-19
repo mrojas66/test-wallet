@@ -1,0 +1,70 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+- name: franchise-service
+  url: http://ms-franchise:8080/ms-franchise-0.0.1-SNAPSHOT/franchise
+  routes:
+  - name: create-franchise-route
+    methods:
+    - POST
+    paths:
+    - /ff
+  - name: update-franchise-name-route
+    methods:
+    - PUT
+    paths:
+    - /ff/(?<franchiseId>[a-zA-Z0-9\-]+)/name
+  - name: get-all-franchises-route
+    methods:
+    - GET
+    paths:
+    - /ff
+
+- name: branch-service
+  url: http://ms-franchise:8080/ms-franchise-0.0.1-SNAPSHOT/branch
+  routes:
+  - name: create-branch-route
+    methods:
+    - POST
+    paths:
+    - /br
+  - name: update-branch-name-route
+    methods:
+    - PUT
+    paths:
+    - /br/(?<branchId>[a-zA-Z0-9\-]+)/name
+  - name: get-all-branches-route
+    methods:
+    - GET
+    paths:
+    - /br
+
+- name: product-service
+  url: http://ms-franchise:8080/ms-franchise-0.0.1-SNAPSHOT/product
+  routes:
+  - name: add-product-route
+    methods:
+    - POST
+    paths:
+    - /pr
+  - name: update-product-stock-route
+    methods:
+    - PUT
+    paths:
+    - /pr/(?<productId>[a-zA-Z0-9\-]+)/stock
+  - name: top-stock-products-by-franchise-route
+    methods:
+    - GET
+    paths:
+    - /pr/top-stock-by-franchise/(?<franchiseId>[a-zA-Z0-9\-]+)
+  - name: update-product-name-route
+    methods:
+    - PUT
+    paths:
+    - /pr/(?<productId>[a-zA-Z0-9\-]+)/name
+  - name: get-all-products-route
+    methods:
+    - GET
+    paths:
+    - /pr

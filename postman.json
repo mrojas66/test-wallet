@@ -1,0 +1,204 @@
+{
+    "info": {
+      "name": "APIs Franchise",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Franchise Service",
+        "item": [
+          {
+            "name": "Create Franchise",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/franchise/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["franchise", ""]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Sample Franchise\",\n    \"other_details\": \"...\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "Update Franchise Name",
+            "request": {
+              "method": "PUT",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/franchise/{{franchiseId}}/name",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["franchise", "{{franchiseId}}", "name"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"newName\": \"Updated Franchise Name\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "Get All Franchises",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/franchise/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["franchise", ""]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Branch Service",
+        "item": [
+          {
+            "name": "Create Branch",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/branch/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["branch", ""]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Sample Branch\",\n    \"franchiseId\": \"{{franchiseId}}\",\n    \"other_details\": \"...\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "Update Branch Name",
+            "request": {
+              "method": "PUT",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/branch/{{branchId}}/name",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["branch", "{{branchId}}", "name"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"newName\": \"Updated Branch Name\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "Get All Branches",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/branch/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["branch", ""]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Product Service",
+        "item": [
+          {
+            "name": "Add Product",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/product/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["product", ""]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Sample Product\",\n    \"franchiseId\": \"{{franchiseId}}\",\n    \"other_details\": \"...\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "Update Product Stock",
+            "request": {
+              "method": "PUT",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/product/{{productId}}/stock",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["product", "{{productId}}", "stock"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"newStockCount\": 100\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "Get All Products",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8000/product/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["product", ""]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  
