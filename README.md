@@ -30,6 +30,7 @@ To deploy the project:
 
 ```bash
 docker-compose up -d
+```
 
 This will launch all services, databases, and the API Gateway. The microservices will be available on their respective ports with Kong on port 8000.
 
@@ -47,3 +48,4 @@ graph TD
   A --> C[ms-franchise]
   B --> D[db-ms-auth PostgreSQL]
   C --> E[db-ms-franchise PostgreSQL]
+```
