@@ -11,6 +11,7 @@
 	<groupId>com.nequi</groupId>
 	<artifactId>ms-auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>ms-auth</name>
 	<description>ms-auth</description>
 	<properties>

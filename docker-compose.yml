@@ -15,7 +15,7 @@ services:
     volumes:
       - db-auth:/var/lib/postgresql/data
 
-  db-ms-francinse:
+  db-ms-franchise:
     image: postgres:13
     container_name: postgres_db_franchise
     environment:
@@ -29,22 +29,38 @@ services:
     volumes:
       - db-fran:/var/lib/postgresql/data
 
-  #ms-auth:
-  #  build:
-  #    context: ./ms-auth
-  #    dockerfile: Dockerfile
-  #  image: ms-auth:latest
-  #  container_name: ms-auth
-  #  environment:
-  #    SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-  #    SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-  #    SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-  #  depends_on:
-  #    - db-ms-auth
-  #  ports:
-  #    - "8081:8080"
-  #  networks:
-  #    - main-network
+  ms-auth:
+    build:
+      context: ./ms-auth
+      dockerfile: Dockerfile
+    container_name: ms-auth
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    depends_on:
+      - db-ms-auth
+    ports:
+      - "7071:8080"
+    networks:
+      - main-network
+
+  ms-franchise:
+    build:
+      context: ./ms-franchise
+      dockerfile: Dockerfile
+    container_name: ms-franchise
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    depends_on:
+      - db-ms-franchise
+    ports:
+      - "7072:8080"
+    networks:
+      - main-network
+
 
   #kong-database:
   #  image: postgres:13

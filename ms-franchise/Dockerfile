@@ -13,7 +13,7 @@ LABEL MAINTAINER="michaelrojas@progracol.com"
 # Eliminar las aplicaciones por defecto de Tomcat
 RUN rm -rf /usr/local/tomcat/webapps/*
 # Copiar tu WAR a la carpeta de aplicaciones de Tomcat
-COPY --from=build /app/target/ms-auth-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/
+COPY --from=build /app/target/ms-franchise-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/
 # Establecer el perfil de Spring Boot
 #ENV SPRING_PROFILES_ACTIVE=dev
 # Exponer el puerto por defecto de Tomcat
