@@ -6,9 +6,10 @@ import com.nequi.msfranchise.us_branch.repository.BranchRepository;
 import com.nequi.msfranchise.us_product.dto.ProductCreateDTO;
 import com.nequi.msfranchise.us_product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,5 +45,15 @@ public class ProductService {
 
     public List<ProductEntity> getTopStockProductsByFranchise(UUID franchiseId) {
         return productRepository.findTopStockProductsByFranchise(franchiseId);
+    }
+
+    public ProductEntity updateName(UUID productId, String newName) {
+        ProductEntity entity = productRepository.findById(productId).orElseThrow();
+        entity.setName(newName);
+        return productRepository.save(entity);
+    }
+
+    public Page<ProductEntity> getAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 }
